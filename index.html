@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="">
+  </head>
+  <body>
+     <form id="shortenForm">
+         <input type="text" id="destinationUrl" placeholder="Enter URL to shorten" required>
+         <button type="submit">Shorten URL</button>
+     </form>
+     <div id="shortenedUrl"></div>
+
+     <script>
+         document.getElementById('shortenForm').addEventListener('submit', function(event) {
+             event.preventDefault();
+             const destinationUrl = document.getElementById('destinationUrl').value;
+
+             fetch('code.php', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({ destination: destinationUrl })
+             })
+             .then(response => response.json())
+             .then(data => {
+                 document.getElementById('shortenedUrl').innerText = `Shortened URL: ${data.shortUrl}`;
+             })
+             .catch(error => console.error('Error:', error));
+         });
+     </script>
+  </body>
+</html>
